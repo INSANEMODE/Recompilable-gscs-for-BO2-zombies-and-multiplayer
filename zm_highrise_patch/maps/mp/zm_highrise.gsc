@@ -179,13 +179,12 @@ main() //checked changed to match cerberus output
 	level._zombie_custom_add_weapons = ::custom_add_weapons;
 	level._allow_melee_weapon_switching = 1;
 	level.custom_ai_type = [];
-	level.custom_ai_type[ level.custom_ai_type.size ] = maps/mp/zombies/_zm_ai_leaper::init; //remove unneeded :: before filepath. makes map fail to launch due to not being able to find _zm_ai_leaper
+	level.custom_ai_type[ level.custom_ai_type.size ] = ::maps/mp/zombies/_zm_ai_leaper::init;
 	include_weapons();
 	include_powerups();
 	include_equipment_for_level();
 	init_level_specific_wall_buy_fx();
-	level.special_weapon_magicbox_check = ::highrise_special_weapon_magicbox_check;  //no function highrise_special_weapon_magicbox_check found. makes map fail to launch due to unresolved external error. //I forgot to include this function from cerberus; for some reason certain functions and code are
-	//missing from certain functions in the scripts I use as a base.
+	level.special_weapon_magicbox_check = ::highrise_special_weapon_magicbox_check;
 	level.melee_anim_state = ::melee_anim_state;
 	level.pandora_fx_func = ::zm_highrise_pandora_fx_func;
 	maps/mp/zm_highrise_elevators::init_elevator_perks();
@@ -1845,28 +1844,4 @@ elevator_traverse_watcher() //checked matches cerberus output
 	}
 }
 
-highrise_special_weapon_magicbox_check(weapon)
-{
-	if ( is_true( level.raygun2_included ) )
-	{
-		if ( weapon == "ray_gun_zm" )
-		{
-			if(self has_weapon_or_upgrade( "raygun_mark2_zm" ) || maps/mp/zombies/_zm_chugabud::is_weapon_available_in_chugabud_corpse( "raygun_mark2_zm", self ) )
-			{
-				return 0;
-			}
-		}
-		if ( weapon == "raygun_mark2_zm" )
-		{
-			if ( self has_weapon_or_upgrade( "ray_gun_zm" ) || maps/mp/zombies/_zm_chugabud::is_weapon_available_in_chugabud_corpse( "ray_gun_zm", self ) )
-			{
-				return 0;
-			}
-			if ( randomint( 100 ) >= 33 )
-			{
-				return 0;
-			}
-		}
-	}
-	return 1;
-}
+
